@@ -19,5 +19,5 @@ func ExampleTrendline() {
 	}
 	os.Stdout.Write(b)
 	// Output:
-	// {"item":[{"text":"Monthly new users","Value":32},[2,4,8,16]]}
+	// {"item":[{"text":"Monthly new users","value":32},[2,4,8,16]]}
 }
