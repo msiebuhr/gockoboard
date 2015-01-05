@@ -32,14 +32,14 @@ func (g GeckOMeter) MarshalJSON() ([]byte, error) {
 
 // Trendline implements the geckoboard trendline widget
 // https://developer.geckoboard.com/#trendline-example
-type Trendline struct {
+type NumberAndTrendline struct {
 	Text  string
 	Value float64
 	Trend []float64
 }
 
 // MarshalJSON will marshal the Trendline into JSON.
-func (t Trendline) MarshalJSON() ([]byte, error) {
+func (t NumberAndTrendline) MarshalJSON() ([]byte, error) {
 	encodedObj, err := json.Marshal(struct {
 		Text  string  `json:"text"`
 		Value float64 `json:"value"`

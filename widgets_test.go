@@ -25,8 +25,8 @@ func TestMarshalGeckOMeter(t *testing.T) {
 	}
 }
 
-func TestMarshalTrendline(t *testing.T) {
-	tl := Trendline{
+func TestMarshalNumberAndTrendline(t *testing.T) {
+	tl := NumberAndTrendline{
 		Text:  "t",
 		Value: 42,
 		Trend: []float64{1, 2, 3},

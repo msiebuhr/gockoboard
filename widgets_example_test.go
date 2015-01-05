@@ -6,8 +6,8 @@ import (
 	"os"
 )
 
-func ExampleTrendline() {
-	tl := Trendline{
+func ExampleNumberAndTrendline() {
+	tl := NumberAndTrendline{
 		Text:  "Monthly new users",
 		Value: 32,
 		Trend: []float64{2, 4, 8, 16},
