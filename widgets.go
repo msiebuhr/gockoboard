@@ -39,8 +39,6 @@ type Trendline struct {
 }
 
 // MarshalJSON will marshal the Trendline into JSON.
-//
-// {"item": [{text and value}, [trendline numbers]]}
 func (t Trendline) MarshalJSON() ([]byte, error) {
 	encodedObj, err := json.Marshal(struct {
 		Text  string  `json:"text"`
