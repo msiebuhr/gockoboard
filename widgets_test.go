@@ -15,7 +15,7 @@ func TestMarshalGeckOMeter(t *testing.T) {
 	geckoJson, err := json.Marshal(g)
 
 	if err != nil {
-		t.Fatalf("Unexpected error when Marshal()'ing:", err)
+		t.Fatalf("Unexpected error when Marshal()'ing: %v", err)
 	}
 
 	expectedJson := `{"item":123.4,"min":{"value":20},"max":{"value":400}}`
@@ -35,7 +35,7 @@ func TestMarshalNumberAndTrendline(t *testing.T) {
 	geckoJson, err := json.Marshal(tl)
 
 	if err != nil {
-		t.Fatalf("Unexpected error when Marshal()'ing:", err)
+		t.Fatalf("Unexpected error when Marshal()'ing: %v", err)
 	}
 
 	expectedJson := `{"item":[{"text":"t","value":42},[1,2,3]]}`
