@@ -27,11 +27,34 @@ func TestMarshalGeckOMeter(t *testing.T) {
 	}
 }
 
-func TestMarshalNumberAndTrendline(t *testing.T) {
-	tl := NumberAndTrendline{
-		Text:  "t",
-		Value: 42,
-		Trend: []float64{1, 2, 3},
+func TestMarshalNumber(t *testing.T) {
+	var tests = []struct {
+		in  Number
+		out string
+	}{
+		{Number{Value: 123}, `{"item":[{"value":123}]}`},
+		{Number{Value: 42, Prefix: "%"}, `{"item":[{"value":42,"prefix":"%"}]}`},
+		{Number{Value: 42, Text: "HG2G"}, `{"item":[{"value":42,"text":"HG2G"}]}`},
+		{Number{Value: 42, Type: "reverse"}, `{"item":[{"value":42,"type":"reverse"}]}`},
+	}
+
+	for _, tt := range tests {
+		geckoJson, err := json.Marshal(tt.in)
+
+		if err != nil {
+			t.Fatalf("Unexpected error when Marshal()'ing: %v", err)
+		}
+
+		if string(geckoJson) != tt.out {
+			t.Fatalf("Expected '%v', got '%v'.", tt.out, string(geckoJson))
+		}
+	}
+}
+
+func TestMarshalNumberAndSecondaryTrendline(t *testing.T) {
+	tl := Number{
+		Value:         1,
+		SecondaryStat: TrendlineSecondary{1, 2, 3},
 	}
 
 	geckoJson, err := json.Marshal(tl)
@@ -40,18 +63,18 @@ func TestMarshalNumberAndTrendline(t *testing.T) {
 		t.Fatalf("Unexpected error when Marshal()'ing: %v", err)
 	}
 
-	expectedJson := `{"item":[{"text":"t","value":42},[1,2,3]]}`
+	expectedJson := `{"item":[{"value":1},[1,2,3]]}`
 
 	if string(geckoJson) != expectedJson {
 		t.Fatalf("Expected '%v', got '%v'.", expectedJson, string(geckoJson))
 	}
 }
 
-func ExampleNumberAndTrendline() {
-	tl := NumberAndTrendline{
-		Text:  "Monthly new users",
-		Value: 32,
-		Trend: []float64{2, 4, 8, 16},
+func ExampleNumberAndTrendlineSecondary() {
+	tl := Number{
+		Value:         32,
+		Text:          "Monthly new users",
+		SecondaryStat: TrendlineSecondary{2, 4, 8, 16},
 	}
 
 	b, err := json.Marshal(tl)
@@ -60,5 +83,5 @@ func ExampleNumberAndTrendline() {
 	}
 	os.Stdout.Write(b)
 	// Output:
-	// {"item":[{"text":"Monthly new users","value":32},[2,4,8,16]]}
+	// {"item":[{"value":32,"text":"Monthly new users"},[2,4,8,16]]}
 }

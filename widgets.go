@@ -30,30 +30,46 @@ func (g GeckOMeter) MarshalJSON() ([]byte, error) {
 	})
 }
 
-// Trendline implements the geckoboard trendline widget
-// https://developer.geckoboard.com/#trendline-example
-type NumberAndTrendline struct {
-	Text  string
-	Value float64
-	Trend []float64
+// The primary kind of Number-widget (there's NumberWithText as well)
+type Number struct {
+	Value         float64
+	Text          string
+	Prefix        string
+	Type          string
+	SecondaryStat interface{}
 }
 
-// MarshalJSON will marshal the Trendline into JSON.
-func (t NumberAndTrendline) MarshalJSON() ([]byte, error) {
+func (n Number) MarshalJSON() ([]byte, error) {
 	encodedObj, err := json.Marshal(struct {
-		Text  string  `json:"text"`
-		Value float64 `json:"value"`
-	}{Text: t.Text, Value: t.Value})
+		Value  float64 `json:"value"`
+		Text   string  `json:"text,omitempty"`
+		Prefix string  `json:"prefix,omitempty"`
+		Type   string  `json:"type,omitempty"`
+	}{
+		Value:  n.Value,
+		Text:   n.Text,
+		Prefix: n.Prefix,
+		Type:   n.Type,
+	})
 
 	if err != nil {
 		return encodedObj, err
 	}
 
-	encodedArray, err := json.Marshal(t.Trend)
-
-	if err != nil {
-		return encodedArray, err
+	// No secondary stat?
+	if n.SecondaryStat == nil {
+		return []byte(fmt.Sprintf(`{"item":[%s]}`, encodedObj)), nil
 	}
 
-	return []byte(fmt.Sprintf(`{"item":[%s,%s]}`, encodedObj, encodedArray)), nil
+	secondaryStat, err := json.Marshal(n.SecondaryStat)
+
+	if err != nil {
+		return secondaryStat, err
+	}
+
+	return []byte(fmt.Sprintf(`{"item":[%s,%s]}`, encodedObj, secondaryStat)), nil
 }
+
+// Trendline implements the geckoboard trendline widget
+// https://developer.geckoboard.com/#trendline-example
+type TrendlineSecondary []float64
