@@ -28,6 +28,42 @@ func TestMarshalGeckOMeter(t *testing.T) {
 	}
 }
 
+func TestLeaderboardRanking(t *testing.T) {
+	t.Parallel()
+
+	old := NewLeaderboard(
+		LeaderboardItem{Label: "1"},
+		LeaderboardItem{Label: "2"},
+		LeaderboardItem{Label: "3"},
+	)
+
+	l := NewLeaderboard(
+		LeaderboardItem{Label: "2"},
+		LeaderboardItem{Label: "3"},
+		LeaderboardItem{Label: "4"},
+	)
+
+	l.CalculatePreviousRanks(old)
+
+	if l.Items[0].PreviousRank != 2 {
+		t.Errorf(
+			"Expected first element, `%v`, to have rank 2.", l.Items[0],
+		)
+	}
+
+	if l.Items[1].PreviousRank != 3 {
+		t.Errorf(
+			"Expected second element, `%v`, to have rank 3.", l.Items[1],
+		)
+	}
+
+	if l.Items[2].PreviousRank != 0 {
+		t.Errorf(
+			"Expected last element, `%v`, to have no rank.", l.Items[1],
+		)
+	}
+}
+
 func TestMarshalNumberAndSecondaryTrendline(t *testing.T) {
 	t.Parallel()
 	tl := Number{

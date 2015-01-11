@@ -43,6 +43,20 @@ func NewLeaderboard(boards ...LeaderboardItem) Leaderboard {
 	return Leaderboard{Items: boards}
 }
 
+// Find the previous rank of each element and set it in the leaderboard
+func (l *Leaderboard) CalculatePreviousRanks(old Leaderboard) {
+	for i, item := range l.Items {
+		item.PreviousRank = 0
+		// Find it's previous rank
+		for j, jtem := range old.Items {
+			if item.Label == jtem.Label {
+				l.Items[i].PreviousRank = float64(j + 1)
+				break
+			}
+		}
+	}
+}
+
 type LeaderboardFormat string
 
 const (
