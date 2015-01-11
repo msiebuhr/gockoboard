@@ -8,6 +8,7 @@ import (
 )
 
 func TestMarshalGeckOMeter(t *testing.T) {
+	t.Parallel()
 	g := GeckOMeter{
 		Item: 123.4,
 		Min:  20,
@@ -28,6 +29,7 @@ func TestMarshalGeckOMeter(t *testing.T) {
 }
 
 func TestMarshalNumberAndSecondaryTrendline(t *testing.T) {
+	t.Parallel()
 	tl := Number{
 		Value:         1,
 		SecondaryStat: TrendlineSecondary{1, 2, 3},
@@ -63,6 +65,7 @@ func ExampleNumberAndTrendlineSecondary() {
 }
 
 func TestMarshalWidgets(t *testing.T) {
+	t.Parallel()
 	var tests = []struct {
 		in  interface{}
 		out string
@@ -102,6 +105,7 @@ func TestMarshalWidgets(t *testing.T) {
 }
 
 func TestMarshalWidgetErrorss(t *testing.T) {
+	t.Parallel()
 	var tests = []struct {
 		in  interface{}
 		err string
