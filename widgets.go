@@ -58,6 +58,20 @@ type LeaderboardItem struct {
 	PreviousRank float64 `json:"previous_rank,omitempty"`
 }
 
+// Monitoring will show if a service is up or down
+type Monitoring struct {
+	Status       string `json:"status"`
+	Downtime     string `json:"downTime,omitempty"`
+	Responsetime string `json:"responseTime,omitempty"`
+}
+
+// Default monitoring values from Geckoboard; arbitrary values are
+// permitted.
+const (
+	MONITORING_UP   string = "Up"
+	MONITORING_DOWN string = "Down"
+)
+
 // The primary kind of Number-widget (there's NumberWithText as well)
 type Number struct {
 	Value         float64

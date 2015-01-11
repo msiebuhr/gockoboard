@@ -113,6 +113,23 @@ func TestMarshalWidgets(t *testing.T) {
 			`{"item":[{"label":"x"}],"format":"currency","unit":"DKK"}`,
 		},
 
+		// Monitoring
+		{
+			Monitoring{Status: MONITORING_UP},
+			`{"status":"Up"}`,
+		},
+		{
+			Monitoring{Status: MONITORING_DOWN},
+			`{"status":"Down"}`,
+		},
+		{
+			Monitoring{
+				Status:       "Whatever",
+				Downtime:     "down",
+				Responsetime: "0",
+			},
+			`{"status":"Whatever","downTime":"down","responseTime":"0"}`,
+		},
 		// RAG
 		{
 			RAG{
