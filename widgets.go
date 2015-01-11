@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"sort"
 )
 
 type valueObject struct {
@@ -55,6 +56,25 @@ func (l *Leaderboard) CalculatePreviousRanks(old Leaderboard) {
 			}
 		}
 	}
+}
+
+// Implement sort.Interface, to make Leaderboards sortable
+func (l Leaderboard) Len() int { return len(l.Items) }
+
+// Implement sort.Interface, to make Leaderboards sortable
+func (l Leaderboard) Swap(i, j int) {
+	l.Items[i], l.Items[j] = l.Items[j], l.Items[i]
+}
+
+// Implement sort.Interface, to make Leaderboards sortable
+func (l Leaderboard) Less(i, j int) bool {
+	if l.Items[i].Value == l.Items[j].Value {
+		return sort.StringsAreSorted([]string{
+			l.Items[i].Label,
+			l.Items[j].Label,
+		})
+	}
+	return l.Items[i].Value < l.Items[j].Value
 }
 
 type LeaderboardFormat string

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"sort"
 	"testing"
 )
 
@@ -61,6 +62,31 @@ func TestLeaderboardRanking(t *testing.T) {
 		t.Errorf(
 			"Expected last element, `%v`, to have no rank.", l.Items[1],
 		)
+	}
+}
+
+func TestLeaderboardSorting(t *testing.T) {
+	t.Parallel()
+
+	l := NewLeaderboard(
+		LeaderboardItem{Label: "4", Value: 3},
+		LeaderboardItem{Label: "3", Value: 3},
+		LeaderboardItem{Label: "2", Value: 2},
+		LeaderboardItem{Label: "1", Value: 1},
+	)
+
+	sort.Sort(l)
+
+	expectedKeys := []string{"1", "2", "3", "4"}
+
+	for i, item := range l.Items {
+		if item.Label != expectedKeys[i] {
+			t.Errorf(
+				"Expected first element, `%v`, to have label `%v`.",
+				item,
+				expectedKeys[i],
+			)
+		}
 	}
 }
 
