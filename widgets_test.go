@@ -169,10 +169,10 @@ func TestMarshalWidgetErrorss(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		_, err := json.Marshal(tt.in)
+		j, err := json.Marshal(tt.in)
 
 		if err == nil {
-			t.Fatalf("Expected error when Marshal()'ing:\n\t`%v`\nGot JSON:\n]t`%v`", tt.in)
+			t.Fatalf("Expected error when Marshal()'ing:\n\t`%v`\nGot JSON:\n]t`%v`", tt.in, j)
 		}
 
 		if err.Error() != tt.err {
