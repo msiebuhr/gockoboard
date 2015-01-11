@@ -90,6 +90,28 @@ func TestMarshalWidgets(t *testing.T) {
 			),
 			`{"item":[{"label":"First","value":123,"previous_rank":7}]}`,
 		},
+		{
+			Leaderboard{
+				Items:  []LeaderboardItem{LeaderboardItem{Label: "x"}},
+				Format: LEADERBOARD_FORMAT_DECIMAL,
+			},
+			`{"item":[{"label":"x"}],"format":"decimal"}`,
+		},
+		{
+			Leaderboard{
+				Items:  []LeaderboardItem{LeaderboardItem{Label: "x"}},
+				Format: LEADERBOARD_FORMAT_PERCENT,
+			},
+			`{"item":[{"label":"x"}],"format":"percent"}`,
+		},
+		{
+			Leaderboard{
+				Items:  []LeaderboardItem{LeaderboardItem{Label: "x"}},
+				Format: LEADERBOARD_FORMAT_CURRENCY,
+				Unit:   "DKK",
+			},
+			`{"item":[{"label":"x"}],"format":"currency","unit":"DKK"}`,
+		},
 
 		// RAG
 		{
