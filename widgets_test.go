@@ -85,3 +85,36 @@ func ExampleNumberAndTrendlineSecondary() {
 	// Output:
 	// {"item":[{"value":32,"text":"Monthly new users"},[2,4,8,16]]}
 }
+
+func TestMarshalWidgets(t *testing.T) {
+	var tests = []struct {
+		in  interface{}
+		out string
+	}{
+		// Text widget
+		{
+			Text{TextPage{Text: "1 2 3"}},
+			`{"item":[{"text":"1 2 3"}]}`,
+		},
+		{
+			Text{
+				TextPage{"1", TEXT_TYPE_NONE},
+				TextPage{"2", TEXT_TYPE_INFO},
+				TextPage{"2", TEXT_TYPE_ALERT},
+			},
+			`{"item":[{"text":"1"},{"text":"2","type":1},{"text":"2","type":2}]}`,
+		},
+	}
+
+	for _, tt := range tests {
+		geckoJson, err := json.Marshal(tt.in)
+
+		if err != nil {
+			t.Fatalf("Unexpected error when Marshal()'ing: %v", err)
+		}
+
+		if string(geckoJson) != tt.out {
+			t.Fatalf("Expected\n\t`%v`,\nGot\n\t`%v`.", tt.out, string(geckoJson))
+		}
+	}
+}

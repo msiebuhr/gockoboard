@@ -2,6 +2,7 @@ package gockoboard
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -73,3 +74,36 @@ func (n Number) MarshalJSON() ([]byte, error) {
 // Trendline implements the geckoboard trendline widget
 // https://developer.geckoboard.com/#trendline-example
 type TrendlineSecondary []float64
+
+// Text implements the Text widget
+// https://developer.geckoboard.com/#text
+type Text []TextPage
+
+func (t Text) MarshalJSON() ([]byte, error) {
+	// Bail if we have too many texts
+	if len(t) > 10 {
+		return []byte{}, errors.New("Text widget support at most 10 entries.")
+	}
+
+	// Pass custom object to regular JSON marshaller
+	return json.Marshal(struct {
+		Item []TextPage `json:"item"`
+	}{
+		Item: t,
+	})
+}
+
+// TextPage is a page of text that a Text-widget will cycle between
+type TextPage struct {
+	Text string   `json:"text"`
+	Type TextType `json:"type,omitempty"`
+}
+
+// TextType tells if the text widget will have any special ornamentation
+type TextType byte
+
+const (
+	TEXT_TYPE_NONE TextType = iota
+	TEXT_TYPE_INFO
+	TEXT_TYPE_ALERT
+)
