@@ -27,30 +27,6 @@ func TestMarshalGeckOMeter(t *testing.T) {
 	}
 }
 
-func TestMarshalNumber(t *testing.T) {
-	var tests = []struct {
-		in  Number
-		out string
-	}{
-		{Number{Value: 123}, `{"item":[{"value":123}]}`},
-		{Number{Value: 42, Prefix: "%"}, `{"item":[{"value":42,"prefix":"%"}]}`},
-		{Number{Value: 42, Text: "HG2G"}, `{"item":[{"value":42,"text":"HG2G"}]}`},
-		{Number{Value: 42, Type: "reverse"}, `{"item":[{"value":42,"type":"reverse"}]}`},
-	}
-
-	for _, tt := range tests {
-		geckoJson, err := json.Marshal(tt.in)
-
-		if err != nil {
-			t.Fatalf("Unexpected error when Marshal()'ing: %v", err)
-		}
-
-		if string(geckoJson) != tt.out {
-			t.Fatalf("Expected '%v', got '%v'.", tt.out, string(geckoJson))
-		}
-	}
-}
-
 func TestMarshalNumberAndSecondaryTrendline(t *testing.T) {
 	tl := Number{
 		Value:         1,
@@ -91,6 +67,12 @@ func TestMarshalWidgets(t *testing.T) {
 		in  interface{}
 		out string
 	}{
+		// Number widgets
+		{Number{Value: 123}, `{"item":[{"value":123}]}`},
+		{Number{Value: 42, Prefix: "%"}, `{"item":[{"value":42,"prefix":"%"}]}`},
+		{Number{Value: 42, Text: "HG2G"}, `{"item":[{"value":42,"text":"HG2G"}]}`},
+		{Number{Value: 42, Type: "reverse"}, `{"item":[{"value":42,"type":"reverse"}]}`},
+
 		// Text widget
 		{
 			Text{TextPage{Text: "1 2 3"}},
