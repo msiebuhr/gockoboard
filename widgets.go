@@ -31,6 +31,33 @@ func (g GeckOMeter) MarshalJSON() ([]byte, error) {
 	})
 }
 
+// Leaderboard implements a ranked list of items with optional values
+// https://developer.geckoboard.com/#leaderboard
+type Leaderboard struct {
+	Items  []LeaderboardItem `json:"item"`
+	Format LeaderboardFormat `json:"format,omitempty"`
+	Unit   string            `json:"unit,omitempty"`
+}
+
+func NewLeaderboard(boards ...LeaderboardItem) Leaderboard {
+	return Leaderboard{Items: boards}
+}
+
+type LeaderboardFormat string
+
+const (
+	LEADERBOARD_FORMAT_DEFAULT  LeaderboardFormat = ""
+	LEADERBOARD_FORMAT_DECIMAL  LeaderboardFormat = "decimal"
+	LEADERBOARD_FORMAT_PERCENT  LeaderboardFormat = "percent"
+	LEADERBOARD_FORMAT_CURRENCY LeaderboardFormat = "currency"
+)
+
+type LeaderboardItem struct {
+	Label        string  `json:"label"`
+	Value        float64 `json:"value,omitempty"`
+	PreviousRank float64 `json:"previous_rank,omitempty"`
+}
+
 // The primary kind of Number-widget (there's NumberWithText as well)
 type Number struct {
 	Value         float64

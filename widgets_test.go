@@ -76,6 +76,21 @@ func TestMarshalWidgets(t *testing.T) {
 		{Number{Value: 42, Text: "HG2G"}, `{"item":[{"value":42,"text":"HG2G"}]}`},
 		{Number{Value: 42, Type: "reverse"}, `{"item":[{"value":42,"type":"reverse"}]}`},
 
+		// Leaderboard
+		{
+			NewLeaderboard(
+				LeaderboardItem{Label: "First"},
+				LeaderboardItem{Label: "Second"},
+			),
+			`{"item":[{"label":"First"},{"label":"Second"}]}`,
+		},
+		{
+			NewLeaderboard(
+				LeaderboardItem{"First", 123, 7},
+			),
+			`{"item":[{"label":"First","value":123,"previous_rank":7}]}`,
+		},
+
 		// RAG
 		{
 			RAG{
