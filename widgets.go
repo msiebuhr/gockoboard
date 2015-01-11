@@ -71,6 +71,49 @@ func (n Number) MarshalJSON() ([]byte, error) {
 	return []byte(fmt.Sprintf(`{"item":[%s,%s]}`, encodedObj, secondaryStat)), nil
 }
 
+// RAG implements the Red/Amber/Green widget.
+// Note the use of pointers (to make fields optional)
+// https://developer.geckoboard.com/#rag
+type RAG struct {
+	Red     *RAGItem
+	Amber   *RAGItem
+	Green   *RAGItem
+	Prefix  string
+	Reverse bool
+}
+
+func (r RAG) MarshalJSON() ([]byte, error) {
+	// Require Red and Amber to be present
+	if r.Red == nil {
+		return []byte{}, errors.New("Red is required.")
+	}
+	if r.Amber == nil {
+		return []byte{}, errors.New("Amber is required.")
+	}
+
+	items := []RAGItem{*r.Red, *r.Amber}
+
+	if r.Green != nil {
+		items = append(items, *r.Green)
+	}
+
+	// Pass custom object to regular JSON marshaller
+	return json.Marshal(struct {
+		Item    []RAGItem `json:"item"`
+		Prefix  string    `json:"prefix,omitempty"`
+		Reverse bool      `json:"reverse,omitempty"`
+	}{
+		Item:    items,
+		Prefix:  r.Prefix,
+		Reverse: r.Reverse,
+	})
+}
+
+type RAGItem struct {
+	Value float64 `json:"value"`
+	Text  string  `json:"text"`
+}
+
 // Trendline implements the geckoboard trendline widget
 // https://developer.geckoboard.com/#trendline-example
 type TrendlineSecondary []float64

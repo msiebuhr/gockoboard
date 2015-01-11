@@ -76,6 +76,25 @@ func TestMarshalWidgets(t *testing.T) {
 		{Number{Value: 42, Text: "HG2G"}, `{"item":[{"value":42,"text":"HG2G"}]}`},
 		{Number{Value: 42, Type: "reverse"}, `{"item":[{"value":42,"type":"reverse"}]}`},
 
+		// RAG
+		{
+			RAG{
+				Red:   &RAGItem{1, "11"},
+				Amber: &RAGItem{2, "22"},
+				Green: &RAGItem{3, "33"},
+			},
+			`{"item":[{"value":1,"text":"11"},{"value":2,"text":"22"},{"value":3,"text":"33"}]}`,
+		},
+		{
+			RAG{
+				Red:     &RAGItem{1, "11"},
+				Amber:   &RAGItem{2, "22"},
+				Prefix:  "@",
+				Reverse: true,
+			},
+			`{"item":[{"value":1,"text":"11"},{"value":2,"text":"22"}],"prefix":"@","reverse":true}`,
+		},
+
 		// Text widget
 		{
 			Text{TextPage{Text: "1 2 3"}},
@@ -112,6 +131,16 @@ func TestMarshalWidgetErrorss(t *testing.T) {
 	}{
 		// Number widgets
 		//{Number{}, ``},
+
+		// RAG
+		{
+			RAG{Red: &RAGItem{}},
+			"json: error calling MarshalJSON for type gockoboard.RAG: Amber is required.",
+		},
+		{
+			RAG{Amber: &RAGItem{}},
+			"json: error calling MarshalJSON for type gockoboard.RAG: Red is required.",
+		},
 
 		// 11 pages of text (only 10 allowed)
 		{
