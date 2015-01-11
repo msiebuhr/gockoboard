@@ -149,6 +149,15 @@ type TrendlineSecondary []float64
 // https://developer.geckoboard.com/#text
 type Text []TextPage
 
+// Create a new Text-widget from the given strings
+func NewSimpleText(args ...string) Text {
+	ret := make(Text, len(args))
+	for i, arg := range args {
+		ret[i] = TextPage{Text: arg}
+	}
+	return ret
+}
+
 func (t Text) MarshalJSON() ([]byte, error) {
 	// Bail if we have too many texts
 	if len(t) > 10 {

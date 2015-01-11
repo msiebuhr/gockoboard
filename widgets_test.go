@@ -145,6 +145,10 @@ func TestMarshalWidgets(t *testing.T) {
 			},
 			`{"item":[{"text":"none"},{"text":"alert","type":1},{"text":"info","type":2}]}`,
 		},
+		{
+			NewSimpleText("1", "2", "3"),
+			`{"item":[{"text":"1"},{"text":"2"},{"text":"3"}]}`,
+		},
 	}
 
 	for _, tt := range tests {
