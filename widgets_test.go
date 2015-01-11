@@ -83,11 +83,11 @@ func TestMarshalWidgets(t *testing.T) {
 		},
 		{
 			Text{
-				TextPage{"1", TEXT_TYPE_NONE},
-				TextPage{"2", TEXT_TYPE_INFO},
-				TextPage{"2", TEXT_TYPE_ALERT},
+				TextPage{"none", TEXT_TYPE_NONE},
+				TextPage{"alert", TEXT_TYPE_ALERT},
+				TextPage{"info", TEXT_TYPE_INFO},
 			},
-			`{"item":[{"text":"1"},{"text":"2","type":1},{"text":"2","type":2}]}`,
+			`{"item":[{"text":"none"},{"text":"alert","type":1},{"text":"info","type":2}]}`,
 		},
 	}
 

@@ -103,7 +103,7 @@ type TextPage struct {
 type TextType byte
 
 const (
-	TEXT_TYPE_NONE TextType = iota
-	TEXT_TYPE_INFO
-	TEXT_TYPE_ALERT
+	TEXT_TYPE_NONE  TextType = iota // No type
+	TEXT_TYPE_ALERT                 // Type 1: Alert
+	TEXT_TYPE_INFO                  // Type 2: Info
 )
