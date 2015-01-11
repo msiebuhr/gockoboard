@@ -118,3 +118,35 @@ func TestMarshalWidgets(t *testing.T) {
 		}
 	}
 }
+
+func TestMarshalWidgetErrorss(t *testing.T) {
+	var tests = []struct {
+		in  interface{}
+		err string
+	}{
+		// Number widgets
+		//{Number{}, ``},
+
+		// 11 pages of text (only 10 allowed)
+		{
+			Text{
+				TextPage{}, TextPage{}, TextPage{}, TextPage{}, TextPage{},
+				TextPage{}, TextPage{}, TextPage{}, TextPage{}, TextPage{},
+				TextPage{},
+			},
+			`json: error calling MarshalJSON for type gockoboard.Text: Text widget support at most 10 entries.`,
+		},
+	}
+
+	for _, tt := range tests {
+		_, err := json.Marshal(tt.in)
+
+		if err == nil {
+			t.Fatalf("Expected error when Marshal()'ing:\n\t`%v`\nGot JSON:\n]t`%v`", tt.in)
+		}
+
+		if err.Error() != tt.err {
+			t.Fatalf("Expected error\n\t`%v`,\nGot\n\t`%v`.", tt.err, err.Error())
+		}
+	}
+}
